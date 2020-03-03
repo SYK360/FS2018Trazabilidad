@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view>
+    <columns>
+        <group name="trazabilidad" title="Trazabilidad" numcolumns="12" valign="bottom">
+            <column name="trazailidadserie" title="Por serie" order="110">
+                <widget type="checkbox" fieldname="trazailidadserie" />
+            </column>
+            <column name="trazailidadlote" title="Por lote" order="120">
+                <widget type="checkbox" fieldname="trazailidadlote" />
+            </column>
+        </group>
+    </columns>
+</view>
