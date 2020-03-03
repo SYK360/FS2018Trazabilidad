@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : productos.xml
+    Author     : Carlos Garcia Gomez
+    Description:
+        Structure for the productos table.
+-->
+<table>
+    <column>
+        <name>comments</name>
+        <type>text</type>
+    </column>
+</table>

@@ -1,0 +1,15 @@
+/.idea/
+/nbproject/
+/node_modules/
+/vendor/
+.DS_Store
+.htaccess
+.vscode
+*-lock.json
+*.cache
+*.lock
+
+# Eclipse config files
+.project
+.settings
+.buildpath
