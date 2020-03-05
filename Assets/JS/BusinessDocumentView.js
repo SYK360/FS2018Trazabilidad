@@ -55,6 +55,7 @@ function businessDocViewSubjectChanged() {
     });
     data.action = "subject-changed";
     console.log("data", data);
+
     $.ajax({
         type: "POST",
         url: businessDocViewUrl,
@@ -73,7 +74,7 @@ function businessDocViewSubjectChanged() {
     });
 }
 
-function businessDocViewRecalculate() {
+function businessDocViewRecalculate(change, source) {
     var data = {};
     $.each($("#" + businessDocViewFormName).serializeArray(), function (key, value) {
         data[value.name] = value.value;
@@ -81,6 +82,22 @@ function businessDocViewRecalculate() {
     data.action = "recalculate-document";
     data.lines = getGridData();
     console.log("data", data);
+    if (change !== null && change[0][2] !== change[0][3]) {
+        if(change[0][1] == 'cantidad'){
+            var newLines = [], k = 0;
+            for(let i = 0; i < data.lines.length; i++){
+                for(let j = 0; j < data.lines[i].cantidad; j++){
+                    newLines[k] = data.lines[i];
+                    k++;
+                }
+            }
+            for(let j = 0; j < newLines.length; j++)
+                newLines[j].cantidad = 1;
+
+            data.lines = newLines;
+            console.log(newLines);
+        }
+    }
     $.ajax({
         type: "POST",
         url: businessDocViewUrl,
@@ -121,6 +138,7 @@ function businessDocViewSave() {
     data.action = "save-document";
     data.lines = getGridData();
     console.log(data);
+
     $.ajax({
         type: "POST",
         url: businessDocViewUrl,
@@ -183,22 +201,15 @@ function businessDocViewSetAutocompletes(columns) {
 }
 
 function getGridData() {
-    var rowIndex, lines = [], k=0;
+    var rowIndex, lines = [];
     for (var i = 0, max = businessDocViewLineData.rows.length; i < max; i++) {
         rowIndex = hsTable.toVisualRow(i);
         if (hsTable.isEmptyRow(rowIndex)) {
             continue;
         }
-        for (let j = 0; j < businessDocViewLineData.rows[i].cantidad; j++){
-            lines[k] = businessDocViewLineData.rows[i];
-            k++;
-        }
-    }
-    for (let i = 0; i < lines.length; i++){
-        lines[i].cantidad = 1;
-        console.log(lines)
-    }
 
+        lines[rowIndex] = businessDocViewLineData.rows[i];
+    }
     return lines;
 }
 
