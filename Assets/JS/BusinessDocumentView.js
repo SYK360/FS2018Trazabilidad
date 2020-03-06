@@ -73,7 +73,29 @@ function businessDocViewSubjectChanged() {
         }
     });
 }
-
+function productHasTraceability(change){
+    let data_row =  hsTable.getDataAtRow(change[0][0]);
+    var result = {};
+    let data = {};
+    data.action = 'get-trazabilidad'
+    data.product = {
+        referencia: data_row[0],
+        descripcion: data_row[1]
+    }
+    $.ajax({
+        type: "POST",
+        url: businessDocViewUrl,
+        dataType: "json",
+        data: data,
+        success: function (results) {
+            console.log("Resultado del request", results)
+        },
+        error: function (xhr, status, error) {
+            // alert(xhr.responseText);
+        }
+    });
+    return null;
+}
 function businessDocViewRecalculate(change, source) {
     var data = {};
     $.each($("#" + businessDocViewFormName).serializeArray(), function (key, value) {
@@ -82,20 +104,17 @@ function businessDocViewRecalculate(change, source) {
     data.action = "recalculate-document";
     data.lines = getGridData();
     console.log("data", data);
-    if (change !== null && change[0][2] !== change[0][3]) {
-        if(change[0][1] == 'cantidad'){
+    if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad') {
+        if(productHasTraceability(change)){
             var newLines = [], k = 0;
-            for(let i = 0; i < data.lines.length; i++){
+            for(let i = 0; i < data.lines.length; i++)
                 for(let j = 0; j < data.lines[i].cantidad; j++){
                     newLines[k] = data.lines[i];
                     k++;
                 }
-            }
             for(let j = 0; j < newLines.length; j++)
                 newLines[j].cantidad = 1;
-
             data.lines = newLines;
-            console.log(newLines);
         }
     }
     $.ajax({
@@ -236,7 +255,7 @@ $(document).ready(function () {
         manualColumnResize: true,
         manualRowMove: true,
         manualColumnMove: false,
-        contextMenu: true,
+        contextMenu: false,
         filters: true,
         dropdownMenu: true,
         preventOverflow: "horizontal",
