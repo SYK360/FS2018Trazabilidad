@@ -1,7 +1,6 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Controller;
 
 use FacturaScripts\Dinamic\Model\Producto;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 
 class EditFacturaProveedor

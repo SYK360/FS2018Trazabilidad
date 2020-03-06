@@ -2,11 +2,11 @@
 <view>
     <columns>
         <group name="trazabilidad" title="Trazabilidad" numcolumns="12" valign="bottom">
-            <column name="trazailidadserie" title="Por serie" order="110">
-                <widget type="checkbox" fieldname="trazailidadseries" />
+            <column name="trazabilidadseries" title="Por serie" order="110">
+                <widget type="checkbox" fieldname="trazabilidadseries" />
             </column>
-            <column name="trazailidadlote" title="Por lote" order="120">
-                <widget type="checkbox" fieldname="trazailidadlotes" />
+            <column name="trazabilidadlotes" title="Por lote" order="120">
+                <widget type="checkbox" fieldname="trazabilidadlotes" />
             </column>
         </group>
     </columns>

@@ -1,20 +1,3 @@
-/*
- * This file is part of FacturaScripts
- * Copyright (C) 2013-2019 Carlos Garcia Gomez <carlos@facturascripts.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
 var businessDocViewAutocompleteColumns = [];
 var businessDocViewLineData = [];
@@ -73,28 +56,31 @@ function businessDocViewSubjectChanged() {
         }
     });
 }
-function productHasTraceability(change){
-    let data_row =  hsTable.getDataAtRow(change[0][0]);
-    var result = {};
-    let data = {};
-    data.action = 'get-trazabilidad'
-    data.product = {
-        referencia: data_row[0],
-        descripcion: data_row[1]
+function productHasTraceability(row){
+    let data_row =  hsTable.getDataAtRow(row);
+    var result = null;
+    if (data_row[1] !== null){
+        let data = {};
+        data.action = 'get-trazabilidad';
+        data.product = {
+            referencia: data_row[0],
+            descripcion: data_row[1]
+        };
+        $.ajax({
+            type: "POST",
+            url: businessDocViewUrl,
+            dataType: "json",
+            data: data,
+            success: function (results) {
+                result = results;
+                console.log('trazabilidad', results);
+            },
+            error: function (xhr, status, error) {
+                alert(xhr.responseText);
+            }
+        });
     }
-    $.ajax({
-        type: "POST",
-        url: businessDocViewUrl,
-        dataType: "json",
-        data: data,
-        success: function (results) {
-            console.log("Resultado del request", results)
-        },
-        error: function (xhr, status, error) {
-            // alert(xhr.responseText);
-        }
-    });
-    return null;
+    return result;
 }
 function businessDocViewRecalculate(change, source) {
     var data = {};
@@ -104,11 +90,15 @@ function businessDocViewRecalculate(change, source) {
     data.action = "recalculate-document";
     data.lines = getGridData();
     console.log("data", data);
-    if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad') {
-        if(productHasTraceability(change)){
+    if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad')
+    {
+        let hasTrazabilidad = productHasTraceability(change[0][0]);
+        if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
+        {
             var newLines = [], k = 0;
             for(let i = 0; i < data.lines.length; i++)
-                for(let j = 0; j < data.lines[i].cantidad; j++){
+                for(let j = 0; j < data.lines[i].cantidad; j++)
+                {
                     newLines[k] = data.lines[i];
                     k++;
                 }
