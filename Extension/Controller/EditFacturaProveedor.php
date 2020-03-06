@@ -20,7 +20,7 @@ class EditFacturaProveedor
               if (isset($product[0])) {
                   $product = $product[0];
                   $data['trazabilidad'] = false;
-                  if ($product->trazailidadseries){
+                  if ($product->trazabilidadseries){
                       $data['trazabilidad'] = 'series';
                   } elseif ($product->trazabilidadlotes){
                       $data['trazabilidad'] = 'lotes';

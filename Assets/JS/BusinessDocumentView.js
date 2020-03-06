@@ -56,9 +56,8 @@ function businessDocViewSubjectChanged() {
         }
     });
 }
-function productHasTraceability(row){
+async function productHasTraceability(row){
     let data_row =  hsTable.getDataAtRow(row);
-    var result = null;
     if (data_row[1] !== null){
         let data = {};
         data.action = 'get-trazabilidad';
@@ -66,23 +65,23 @@ function productHasTraceability(row){
             referencia: data_row[0],
             descripcion: data_row[1]
         };
-        $.ajax({
+        const response = await $.ajax({
             type: "POST",
             url: businessDocViewUrl,
             dataType: "json",
             data: data,
-            success: function (results) {
-                result = results;
+            success: async function (results) {
                 console.log('trazabilidad', results);
             },
             error: function (xhr, status, error) {
                 alert(xhr.responseText);
             }
         });
+        return response;
     }
-    return result;
+    return  null;
 }
-function businessDocViewRecalculate(change, source) {
+async function businessDocViewRecalculate(change = null, source = null) {
     var data = {};
     $.each($("#" + businessDocViewFormName).serializeArray(), function (key, value) {
         data[value.name] = value.value;
@@ -92,7 +91,7 @@ function businessDocViewRecalculate(change, source) {
     console.log("data", data);
     if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad')
     {
-        let hasTrazabilidad = productHasTraceability(change[0][0]);
+        let hasTrazabilidad = await productHasTraceability(change[0][0]);
         if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
         {
             var newLines = [], k = 0;
@@ -251,6 +250,10 @@ $(document).ready(function () {
         preventOverflow: "horizontal",
         minSpareRows: 5,
         enterMoves: {row: 0, col: 1},
+        hiddenRows: {
+            rows: [0, 5, 9],
+            indicators: true
+        },
         modifyColWidth: function (width, col) {
             if (width > 500) {
                 return 500;
