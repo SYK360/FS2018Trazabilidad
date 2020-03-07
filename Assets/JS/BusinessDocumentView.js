@@ -74,7 +74,7 @@ async function productHasTraceability(row){
                 console.log('trazabilidad', results);
             },
             error: function (xhr, status, error) {
-                alert(xhr.responseText);
+                console.log(xhr.responseText);
             }
         });
         return response;

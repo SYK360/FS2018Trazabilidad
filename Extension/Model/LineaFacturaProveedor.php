@@ -15,8 +15,7 @@ class LineaFacturaProveedor
                 new DataBaseWhere('referencia', $this->referencia),
                 new DataBaseWhere('descripcion', $this->descripcion)
             ];
-            $product = (new Producto())->all($where);
-
+            $product = (new Producto())->all($where)[0];
             if($product->trazabilidadseries)
             {
                 $where = [
@@ -32,7 +31,7 @@ class LineaFacturaProveedor
             }else if($product->trazabilidadlotes){
                 //Aqui se guardara para lotes
             }
-            return false;
+            return true;
         };
     }
 }
