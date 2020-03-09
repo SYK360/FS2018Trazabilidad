@@ -34,7 +34,6 @@ class LineaFacturaProveedor
                         if ($stock->save())
                         {
                             ToolBox::log()->notice("Se creo un stock para el producto: $product->referencia con el numero de serie: $this->numserie");
-                            return true;
                         }
 
                     }
@@ -48,12 +47,11 @@ class LineaFacturaProveedor
                         if ($stock->save())
                         {
                             ToolBox::log()->notice("Se creo un stock para el producto: $product->referencia con el numero de lote: $this->lote");
-                            return true;
                         }
                     }
                 }
             }
-            return false;
+            return true;
         };
     }
 }

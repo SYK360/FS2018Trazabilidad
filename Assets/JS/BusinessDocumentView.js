@@ -89,16 +89,14 @@ async function businessDocViewRecalculate(change = null, source = null) {
     data.action = "recalculate-document";
     data.lines = getGridData();
     console.log("data", data);
-    if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad')
-    {
+    if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad') {
         let hasTrazabilidad = await productHasTraceability(change[0][0]);
         if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
         {
             var newLines = [], k = 0;
-            for(let i = 0; i < data.lines.length; i++){
-                if (i < change[0][0]){
+            for(let i = 0; i < data.lines.length; i++, k++) {
+                if (i < change[0][0]) {
                     newLines[k] = data.lines[i];
-                    k++;
                 } else {
                     let num_rows = data.lines[i].cantidad;
                     for(let j = 0; j < num_rows; j++, k++) {
