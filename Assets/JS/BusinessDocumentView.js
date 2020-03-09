@@ -65,6 +65,7 @@ async function productHasTraceability(row){
             referencia: data_row[0],
             descripcion: data_row[1]
         };
+        debugger
         const response = await $.ajax({
             type: "POST",
             url: businessDocViewUrl,
@@ -95,14 +96,15 @@ async function businessDocViewRecalculate(change = null, source = null) {
         if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
         {
             var newLines = [], k = 0;
-            for(let i = 0; i < data.lines.length; i++)
-                for(let j = 0; j < data.lines[i].cantidad; j++)
-                {
+            for(let i = 0; i < data.lines.length; i++){
+                for(let j = 0; j < data.lines[i].cantidad; j++) {
                     newLines[k] = data.lines[i];
                     k++;
                 }
-            for(let j = 0; j < newLines.length; j++)
+            }
+            for(let j = 0; j < newLines.length; j++){
                 newLines[j].cantidad = 1;
+            }
             data.lines = newLines;
         }
     }
