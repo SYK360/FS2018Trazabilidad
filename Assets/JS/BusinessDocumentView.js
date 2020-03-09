@@ -96,13 +96,16 @@ async function businessDocViewRecalculate(change = null, source = null) {
         {
             var newLines = [], k = 0;
             for(let i = 0; i < data.lines.length; i++){
-                for(let j = 0; j < data.lines[i].cantidad; j++) {
+                if (i < change[0][0]){
                     newLines[k] = data.lines[i];
                     k++;
+                } else {
+                    let num_rows = data.lines[i].cantidad;
+                    for(let j = 0; j < num_rows; j++, k++) {
+                        newLines[k] = data.lines[i];
+                        newLines[k].cantidad = 1;
+                    }
                 }
-            }
-            for(let j = 0; j < newLines.length; j++){
-                newLines[j].cantidad = 1;
             }
             data.lines = newLines;
         }
