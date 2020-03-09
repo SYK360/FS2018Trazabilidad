@@ -65,7 +65,6 @@ async function productHasTraceability(row){
             referencia: data_row[0],
             descripcion: data_row[1]
         };
-        debugger
         const response = await $.ajax({
             type: "POST",
             url: businessDocViewUrl,

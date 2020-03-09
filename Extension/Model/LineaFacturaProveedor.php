@@ -38,11 +38,11 @@ class LineaFacturaProveedor
                     }
                 }else if($product->trazabilidadlotes)
                 {
-                    $where[] = new DataBaseWhere('lote', $this->lote);
+                    $where[] = new DataBaseWhere('lote', $this->numserie);
                     if(!(new Stock())->loadFromCode('', $where))
                     {
                         $stock->cantidad = $this->cantidad;
-                        $stock->lote = $this->lote;
+                        $stock->lote = $this->numserie;
                         if ($stock->save()) {
                             ToolBox::log()->notice("Se creo un stock para el producto: $product->referencia con el numero de lote: $this->lote");
                         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <view>
  <columns>
-        <column name="# Serie" display="right" order="200">
+        <column name="# Serie/Lote" display="right" order="200">
             <widget type="text" fieldname="numserie" />
         </column>
     </columns>
