@@ -247,6 +247,7 @@ $(document).ready(function () {
         manualRowMove: true,
         manualColumnMove: false,
         contextMenu: true,
+        maxRows: 300,
         filters: true,
         dropdownMenu: true,
         preventOverflow: "horizontal",
