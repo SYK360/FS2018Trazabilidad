@@ -11,12 +11,12 @@ class LineaFacturaProveedor
     public function saveBefore()
     {
         return function() {
-            $this->toolBox()->i18nLog()->error('record-not-found');
             $where = [
                 new DataBaseWhere('referencia', $this->referencia),
                 new DataBaseWhere('descripcion', $this->descripcion)
             ];
-            if ((new Producto())->loadFromCode('', $where)) {
+            if ((new Producto())->loadFromCode('', $where))
+            {
                 $product = (new Producto())->all($where)[0];
                 $stock = new Stock();
                 $stock->idproducto = $product->idproducto;
@@ -25,31 +25,35 @@ class LineaFacturaProveedor
                 $stock->cantidad = 1;
                 $stock->codalmacen = $_POST['codalmacen'];
                 $where = [new DataBaseWhere('referencia', $this->referencia)];
-                if($product->trazabilidadseries)
+                if ($product->trazabilidadseries)
                 {
                     $where[] = new DataBaseWhere('numserie', $this->numserie);
                     if(!(new Stock())->loadFromCode('', $where))
                     {
                         $stock->numserie = $this->numserie;
-                        if ($stock->save()) {
+                        if ($stock->save())
+                        {
                             ToolBox::log()->notice("Se creo un stock para el producto: $product->referencia con el numero de serie: $this->numserie");
+                            return true;
                         }
 
                     }
-                }else if($product->trazabilidadlotes)
+                } else if ($product->trazabilidadlotes)
                 {
                     $where[] = new DataBaseWhere('lote', $this->numserie);
                     if(!(new Stock())->loadFromCode('', $where))
                     {
                         $stock->cantidad = $this->cantidad;
                         $stock->lote = $this->numserie;
-                        if ($stock->save()) {
+                        if ($stock->save())
+                        {
                             ToolBox::log()->notice("Se creo un stock para el producto: $product->referencia con el numero de lote: $this->lote");
+                            return true;
                         }
                     }
                 }
             }
-            return true;
+            return false;
         };
     }
 }

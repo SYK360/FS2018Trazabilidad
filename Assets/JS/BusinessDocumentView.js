@@ -248,16 +248,12 @@ $(document).ready(function () {
         manualColumnResize: true,
         manualRowMove: true,
         manualColumnMove: false,
-        contextMenu: false,
+        contextMenu: true,
         filters: true,
         dropdownMenu: true,
         preventOverflow: "horizontal",
         minSpareRows: 5,
         enterMoves: {row: 0, col: 1},
-        hiddenRows: {
-            rows: [0, 5, 9],
-            indicators: true
-        },
         modifyColWidth: function (width, col) {
             if (width > 500) {
                 return 500;
