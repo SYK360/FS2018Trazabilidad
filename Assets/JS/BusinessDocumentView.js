@@ -93,7 +93,7 @@ async function businessDocViewRecalculate(change = null, source = null) {
         let hasTrazabilidad = await productHasTraceability(change[0][0]);
         if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
         {
-            var newLines = [], k = 0;
+            var newLines = [], k = 0, changed = false;
             for(let i = 0; i < data.lines.length; i++, k++) {
                 if (i < change[0][0]) {
                     newLines[k] = data.lines[i];
@@ -106,7 +106,11 @@ async function businessDocViewRecalculate(change = null, source = null) {
                 }
             }
             data.lines = newLines;
+            if(change[0][3] != 1){
+                changed = true;
+            }
         }
+
     }
     $.ajax({
         type: "POST",
@@ -128,8 +132,10 @@ async function businessDocViewRecalculate(change = null, source = null) {
                 businessDocViewLineData.rows[visualRow] = element;
                 rowPos++;
             });
-
             hsTable.render();
+            if(changed){
+                businessDocViewSave()
+            }
             console.log("results", results);
         },
         error: function (xhr, status, error) {
