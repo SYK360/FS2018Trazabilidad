@@ -35,13 +35,26 @@ class LineaFacturaProveedor
                         $stock->numserie = $this->numserie;
                         if ($stock->save())
                         {
-                            ToolBox::log()->notice("Se creo un stock para el producto: $product->referencia con el numero de serie: $this->numserie");
+                            $this->toolbox()->log()->info("Se creo un stock para el producto: $product->referencia con el numero de serie: $this->numserie");
                         }
 
                     }
                 }
             }
             return true;
+        };
+    }
+    public function delete(){
+        return function (){
+            $where = [
+                new DataBaseWhere('referencia', $this->referencia),
+                new DataBaseWhere('numserie', $this->numserie)
+            ];
+            $stock = (new Stock())->all($where);
+            if(isset($stock[0])){
+                $this->toolbox()->log()->info("Se eliminara el stock con la serie: " . $stock[0]->numserie);
+                $stock[0]->delete();
+            }
         };
     }
 }
