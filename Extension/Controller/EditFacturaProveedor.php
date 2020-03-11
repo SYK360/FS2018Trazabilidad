@@ -1,9 +1,7 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Controller;
 
-use FacturaScripts\Core\Model\Stock;
 use FacturaScripts\Dinamic\Model\Producto;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
-use FacturaScripts\Core\Model\LineaFacturaProveedor;
 
 class EditFacturaProveedor
 {
