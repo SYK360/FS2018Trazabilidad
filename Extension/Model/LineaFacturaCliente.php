@@ -5,7 +5,7 @@ use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Dinamic\Model\Producto;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadStock;
 
-class LineaFacturaProveedor
+class LineaFacturaCliente
 {
     public function saveBefore()
     {

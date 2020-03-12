@@ -4,7 +4,7 @@ namespace FacturaScripts\Plugins\Trazabilidad\Model;
 
 use FacturaScripts\Core\Model\Stock;
 
-class EmptyStock extends Stock
+class TrazabilidadStock extends Stock
 {
     public function delete()
     {
@@ -20,5 +20,9 @@ class EmptyStock extends Stock
             return true;
         }
         return false;
+    }
+    public function primaryDescriptionColumn()
+    {
+        return 'referencia';
     }
 }
