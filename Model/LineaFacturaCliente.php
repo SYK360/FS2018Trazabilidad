@@ -17,8 +17,6 @@ class LineaFacturaCliente extends \FacturaScripts\Core\Model\LineaFacturaCliente
         if ((new Producto())->loadFromCode('', $where))
         {
             $product = (new Producto())->all($where)[0];
-            $this->toolbox()->log()->info("Se actualizara un registro de stock para el producto: $product->referencia con el numero de serie: $this->numserie");
-
             if ($product->trazabilidadseries) {
                 return true;
             }else{

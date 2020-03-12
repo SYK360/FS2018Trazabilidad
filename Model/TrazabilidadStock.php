@@ -14,6 +14,7 @@ class TrazabilidadStock extends Stock
 
         return false;
     }
+
     public function save()
     {
         if (\FacturaScripts\Core\Model\Base\ModelClass::save()) {
@@ -21,10 +22,12 @@ class TrazabilidadStock extends Stock
         }
         return false;
     }
+
     public function primaryDescriptionColumn()
     {
         return 'referencia';
     }
+
     public function getStock($where)
     {
         if($this->loadFromCode('', $where)){

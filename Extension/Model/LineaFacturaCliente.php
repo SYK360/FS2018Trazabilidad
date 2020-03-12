@@ -31,7 +31,7 @@ class LineaFacturaCliente
                             $stock->cantidad = 0;
                             $stock->save();
                         }else{
-                            $this->toolbox()->log()->error("El stock con serie: $stock->numserie tiene conflictos, ya se vendio");
+                            $this->toolbox()->log()->error("El stock con serie: $stock->numserie tiene conflictos, no tiene stock o esta registrado en una factura.");
                             return false;
                         }
                     }
