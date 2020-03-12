@@ -25,4 +25,11 @@ class TrazabilidadStock extends Stock
     {
         return 'referencia';
     }
+    public function getStock($where)
+    {
+        if($this->loadFromCode('', $where)){
+            return $this->all($where)[0];
+        }
+        return  false;
+    }
 }

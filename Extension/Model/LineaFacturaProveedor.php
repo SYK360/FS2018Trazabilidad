@@ -1,6 +1,5 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Model;
 
-use FacturaScripts\Core\Model\Stock;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Dinamic\Model\Producto;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadStock;
@@ -25,7 +24,7 @@ class LineaFacturaProveedor
                         new DataBaseWhere('referencia', $this->referencia),
                         new DataBaseWhere('numserie', $this->numserie)
                     ];
-                    if(!(new Stock())->loadFromCode('', $where) && !empty($this->numserie))
+                    if(!(new TrazabilidadStock())->loadFromCode('', $where) && !empty($this->numserie))
                     {
                         $stock = new TrazabilidadStock();
                         $stock->idproducto = $product->idproducto;
@@ -50,7 +49,6 @@ class LineaFacturaProveedor
             ];
             $stock = (new TrazabilidadStock())->all($where);
             if(isset($stock[0])){
-                $this->toolbox()->log()->info("Se eliminara el stock con la serie: " . $stock[0]->numserie);
                 $stock[0]->delete();
             }
         };

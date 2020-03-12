@@ -17,42 +17,27 @@ class LineaFacturaCliente
             if ((new Producto())->loadFromCode('', $where))
             {
                 $product = (new Producto())->all($where)[0];
-                $this->toolbox()->log()->info("Se actualizara un registro de stock para el producto: $product->referencia con el numero de serie: $this->numserie");
-
                 if ($product->trazabilidadseries)
                 {
                     $where = [
                         new DataBaseWhere('referencia', $this->referencia),
                         new DataBaseWhere('numserie', $this->numserie)
                     ];
-                    if(!(new Stock())->loadFromCode('', $where) && !empty($this->numserie))
+                    $stock = (new TrazabilidadStock())->getStock($where);
+                    if($stock && !empty($this->numserie))
                     {
-                        $stock = new TrazabilidadStock();
-                        $stock->idproducto = $product->idproducto;
-                        $stock->referencia = $product->referencia;
-                        $stock->disponible = 1;
-                        $stock->cantidad = 1;
-                        $stock->codalmacen = $_POST['codalmacen'];
-                        $stock->numserie = $this->numserie;
-                        $stock->save();
-
+                        if($stock->cantidad == 1){
+                            $stock->disponible = 0;
+                            $stock->cantidad = 0;
+                            $stock->save();
+                        }else{
+                            $this->toolbox()->log()->error("El stock con serie: $stock->numserie tiene conflictos, ya se vendio");
+                            return false;
+                        }
                     }
                 }
             }
             return true;
-        };
-    }
-    public function delete(){
-        return function (){
-            $where = [
-                new DataBaseWhere('referencia', $this->referencia),
-                new DataBaseWhere('numserie', $this->numserie)
-            ];
-            $stock = (new TrazabilidadStock())->all($where);
-            if(isset($stock[0])){
-                $this->toolbox()->log()->info("Se eliminara el stock con la serie: " . $stock[0]->numserie);
-                $stock[0]->delete();
-            }
         };
     }
 
