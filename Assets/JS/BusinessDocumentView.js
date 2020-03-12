@@ -181,9 +181,9 @@ function businessDocViewSetAutocompletes(columns) {
     for (var key = 0; key < columns.length; key++) {
         if (columns[key].type === "autocomplete") {
             businessDocViewAutocompleteColumns.push(columns[key].data);
-            var source = columns[key].source["source"];
-            var field = columns[key].source["fieldcode"];
-            var title = columns[key].source["fieldtitle"];
+            let source = columns[key].source["source"];
+            let field = columns[key].source["fieldcode"];
+            let title = columns[key].source["fieldtitle"];
             columns[key].source = function (query, process) {
                 var ajaxData = {
                     term: query,
