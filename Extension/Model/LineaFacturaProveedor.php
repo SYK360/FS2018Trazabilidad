@@ -1,6 +1,5 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Model;
 
-
 use FacturaScripts\Core\Model\Stock;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Dinamic\Model\Producto;
@@ -56,4 +55,5 @@ class LineaFacturaProveedor
             }
         };
     }
+
 }

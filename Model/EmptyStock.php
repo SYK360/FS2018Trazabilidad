@@ -1,6 +1,4 @@
 <?php
-
-
 namespace FacturaScripts\Plugins\Trazabilidad\Model;
 
 
