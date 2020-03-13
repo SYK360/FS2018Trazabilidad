@@ -20,15 +20,15 @@ class LineaFacturaCliente
                         new DataBaseWhere('numserie', $this->numserie)
                     ];
                     $stock = (new TrazabilidadStock())->getStock($where);
-                    if($stock && !empty($this->numserie))
+                    if ($stock && !empty($this->numserie))
                     {
-                        if($this->cantidad != 1)
+                        $linea =  new LineaFC();
+                        if ($this->cantidad != 1)
                         {
-                            $this->toolbox()->log()->error("Solo posee $stock->cantidad producto con la serie $this->numserie, cambie la cantidad.");
+                            $this->toolbox()->log()->error("Solo posee un producto con la serie $this->numserie, cambie la cantidad.");
                             return false;
                         }
-                        $linea =  new LineaFC();
-                        if ($stock->cantidad == 1 || $linea->count($where) == 1)
+                        if ($stock->cantidad == 1 || ($linea->count($where) == 1 && $this->idlinea))
                         {
                             $stock->disponible = 0;
                             $stock->cantidad = 0;
