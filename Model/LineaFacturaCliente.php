@@ -17,11 +17,11 @@ class LineaFacturaCliente extends \FacturaScripts\Core\Model\LineaFacturaCliente
         if ((new Producto())->loadFromCode('', $where))
         {
             $product = (new Producto())->all($where)[0];
-            if ($product->trazabilidadseries) {
-                return true;
-            }else{
+            if (!$product->trazabilidadseries)
+            {
                 return parent::updateStock();
             }
+            return true;
         }
         return true;
     }

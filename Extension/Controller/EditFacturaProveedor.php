@@ -7,8 +7,10 @@ class EditFacturaProveedor
 {
     public function execPreviousAction()
     {
-        return function ($action) {
-           if ($action == 'get-trazabilidad'){
+        return function ($action)
+        {
+           if ($action == 'get-trazabilidad')
+           {
                $this->setTemplate(false);
               $dataProduct = $this->request->request->get('product');
               $where = [
@@ -17,7 +19,8 @@ class EditFacturaProveedor
               ];
 
               $product = (new Producto())->all($where);
-              if (isset($product[0])) {
+              if (isset($product[0]))
+              {
                   $product = $product[0];
                   $data['trazabilidad'] = false;
                   if ($product->trazabilidadseries){

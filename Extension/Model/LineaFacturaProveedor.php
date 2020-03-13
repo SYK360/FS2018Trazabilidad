@@ -39,15 +39,18 @@ class LineaFacturaProveedor
             return true;
         };
     }
-    public function delete(){
-        return function (){
+    public function delete()
+    {
+        return function ()
+        {
             $where = [
                 new DataBaseWhere('referencia', $this->referencia),
                 new DataBaseWhere('numserie', $this->numserie)
             ];
-            $stock = (new TrazabilidadStock())->all($where);
-            if(isset($stock[0])){
-                $stock[0]->delete();
+            $stock = (new TrazabilidadStock())->getStock($where);
+            if ($stock)
+            {
+                $stock->delete();
             }
         };
     }

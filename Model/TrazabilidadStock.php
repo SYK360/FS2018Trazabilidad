@@ -8,7 +8,8 @@ class TrazabilidadStock extends Stock
 {
     public function delete()
     {
-        if (\FacturaScripts\Core\Model\Base\ModelClass::delete()) {
+        if (\FacturaScripts\Core\Model\Base\ModelClass::delete())
+        {
             return true;
         }
 
@@ -17,7 +18,8 @@ class TrazabilidadStock extends Stock
 
     public function save()
     {
-        if (\FacturaScripts\Core\Model\Base\ModelClass::save()) {
+        if (\FacturaScripts\Core\Model\Base\ModelClass::save())
+        {
             return true;
         }
         return false;
@@ -30,7 +32,8 @@ class TrazabilidadStock extends Stock
 
     public function getStock($where)
     {
-        if($this->loadFromCode('', $where)){
+        if($this->loadFromCode('', $where))
+        {
             return $this->all($where)[0];
         }
         return  false;

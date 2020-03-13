@@ -19,11 +19,11 @@ class LineaFacturaProveedor extends \FacturaScripts\Core\Model\LineaFacturaProve
             $product = (new Producto())->all($where)[0];
             $this->toolbox()->log()->info("Se actualizará un registro de stock para el producto: $product->referencia con el número de serie: $this->numserie");
 
-            if ($product->trazabilidadseries) {
-                return true;
-            }else{
+            if (!$product->trazabilidadseries)
+            {
                 return parent::updateStock();
             }
+            return true;
         }
         return true;
     }
