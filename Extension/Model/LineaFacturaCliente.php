@@ -1,8 +1,8 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Model;
 
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
-use FacturaScripts\Dinamic\Model\Producto;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadStock;
+use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadProducto;
 
 class LineaFacturaCliente
 {
@@ -10,13 +10,8 @@ class LineaFacturaCliente
     {
         return function()
         {
-            $where = [
-                new DataBaseWhere('referencia', $this->referencia),
-                new DataBaseWhere('descripcion', $this->descripcion)
-            ];
-            if ((new Producto())->loadFromCode('', $where))
+            if ($product = (new TrazabilidadProducto())->get($this->referencia))
             {
-                $product = (new Producto())->all($where)[0];
                 if ($product->trazabilidadseries)
                 {
                     $where = [
@@ -26,20 +21,27 @@ class LineaFacturaCliente
                     $stock = (new TrazabilidadStock())->getStock($where);
                     if($stock && !empty($this->numserie))
                     {
+                        if($this->cantidad != 1)
+                        {
+                            $this->toolbox()->log()->error("Solo posee un producto con la serie $this->numserie, cambie la cantidad.");
+                            return false;
+                        }
                         if ($stock->cantidad == 1)
                         {
                             $stock->disponible = 0;
                             $stock->cantidad = 0;
                             $stock->save();
-                        } else
-                        {
-                            $this->toolbox()->log()->error("El stock con serie: $stock->numserie tiene conflictos, no tiene stock o esta registrado en una factura.");
-                            return false;
+                            return true;
                         }
+                        else {
+                            $this->toolbox()->log()->error("El producto con serie $stock->numserie tiene conflictos, no tiene stock o esta registrado en otra factura.");
+                        }
+                    } else {
+                        $this->toolbox()->log()->warning("El producto tiene trazabilidad, seleccione la serie.");
                     }
+                    return false;
                 }
             }
-            return true;
         };
     }
     public function delete()
@@ -57,7 +59,7 @@ class LineaFacturaCliente
                 $stock->disponible = 1;
                 if ($stock->save())
                 {
-                    $this->toolbox()->log()->info("El stock con serie: $stock->numserie se ha restaurado.");
+                    $this->toolbox()->log()->info("El stock con serie $stock->numserie se ha restaurado.");
                 }
             }
         };

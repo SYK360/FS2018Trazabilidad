@@ -1,21 +1,16 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Model;
 
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
-use FacturaScripts\Dinamic\Model\Producto;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadStock;
+use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadProducto;
 
 class LineaFacturaProveedor
 {
     public function saveBefore()
     {
         return function() {
-            $where = [
-                new DataBaseWhere('referencia', $this->referencia),
-                new DataBaseWhere('descripcion', $this->descripcion)
-            ];
-            if ((new Producto())->loadFromCode('', $where))
+            if ($product = (new TrazabilidadProducto())->get($this->referencia))
             {
-                $product = (new Producto())->all($where)[0];
                 if ($product->trazabilidadseries)
                 {
                     $where = [
