@@ -17,7 +17,7 @@ class LineaFacturaProveedor
                         new DataBaseWhere('referencia', $this->referencia),
                         new DataBaseWhere('numserie', $this->numserie)
                     ];
-                    if(!(new TrazabilidadStock())->loadFromCode('', $where) && !empty($this->numserie))
+                    if(!(new TrazabilidadStock())->getStock($where) && !empty($this->numserie))
                     {
                         $stock = new TrazabilidadStock();
                         $stock->idproducto = $product->idproducto;

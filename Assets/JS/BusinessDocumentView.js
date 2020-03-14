@@ -1,3 +1,4 @@
+/* Plugin Trazabilidad by BitMedia */
 
 var businessDocViewAutocompleteColumns = [];
 var businessDocViewLineData = [];
@@ -203,7 +204,6 @@ function businessDocViewSetAutocompletes(columns) {
                     success: function (response) {
                         var values = [];
                         let data = hsTable.getDataAtCol(hsTable.countVisibleCols() - 1);
-                        debugger
                         response.forEach(function (element) {
                             if (!data.includes(element.key))
                                 values.push(element.key + " | " + element.value);

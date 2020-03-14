@@ -1,7 +1,6 @@
 <?php
 namespace FacturaScripts\Plugins\Trazabilidad\Model;
 
-
 use FacturaScripts\Core\Model\Stock;
 
 class TrazabilidadStock extends Stock
@@ -30,8 +29,9 @@ class TrazabilidadStock extends Stock
         return 'referencia';
     }
 
-    public function getStock($where)
+    public function getStock(array $where)
     {
+//        $where[] = new DataBaseWhere('codalmacen', $_POST['codalmacen']);
         if($this->loadFromCode('', $where))
         {
             return $this->all($where)[0];
