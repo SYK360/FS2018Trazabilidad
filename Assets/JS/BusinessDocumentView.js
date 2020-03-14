@@ -13,8 +13,10 @@ function beforeChange(changes, source) {
                 // apply for autocomplete columns
                 if (typeof changes[0][3] === "string") {
                     changes[0][3] = changes[0][3].split(" | ", 1)[0];
-                    var position = hsTable.getSelected();
-                    hsTable.setDataAtCell(position[0][0], 2, '');
+                    if (changes[0][1] == 'referencia'){
+                        var position = hsTable.getSelected();
+                        hsTable.setDataAtCell(position[0][0], 2, '');
+                    }
                 }
             }
         }
@@ -107,7 +109,7 @@ async function businessDocViewRecalculate(change = null, source = null) {
             }
             data.lines = newLines;
             if(change[0][3] != 1){
-                changed = true;
+                changed = hasTrazabilidad.autosave;
             }
         }
 
@@ -178,7 +180,7 @@ function businessDocViewSave() {
 }
 
 function businessDocViewSetAutocompletes(columns) {
-    for (var key = 0; key < columns.length; key++) {
+    for (let key = 0; key < columns.length; key++) {
         if (columns[key].type === "autocomplete") {
             businessDocViewAutocompleteColumns.push(columns[key].data);
             let source = columns[key].source["source"];
@@ -200,8 +202,11 @@ function businessDocViewSetAutocompletes(columns) {
                     data: ajaxData,
                     success: function (response) {
                         var values = [];
+                        let data = hsTable.getDataAtCol(hsTable.countVisibleCols() - 1);
+                        debugger
                         response.forEach(function (element) {
-                            values.push(element.key + " | " + element.value);
+                            if (!data.includes(element.key))
+                                values.push(element.key + " | " + element.value);
                         });
                         process(values);
                     },
@@ -223,7 +228,6 @@ function getGridData() {
         if (hsTable.isEmptyRow(rowIndex)) {
             continue;
         }
-
         lines[rowIndex] = businessDocViewLineData.rows[i];
     }
     return lines;

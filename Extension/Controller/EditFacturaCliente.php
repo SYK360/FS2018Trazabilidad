@@ -3,7 +3,7 @@
 use FacturaScripts\Dinamic\Model\Producto;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 
-class EditFacturaProveedor
+class EditFacturaCliente
 {
     public function execPreviousAction()
     {
@@ -11,7 +11,7 @@ class EditFacturaProveedor
         {
            if ($action == 'get-trazabilidad')
            {
-               $this->setTemplate(false);
+              $this->setTemplate(false);
               $dataProduct = $this->request->request->get('product');
               $where = [
                   new DataBaseWhere('referencia', $dataProduct['referencia']),
@@ -24,7 +24,7 @@ class EditFacturaProveedor
                   $data = [];
                   $product = $product[0];
                   if ($product->trazabilidadseries){
-                      $data['autosave'] = true;
+                      $data['autosave'] = false;
                       $data['trazabilidad'] = 'series';
                   }
                   $this->response->setContent(json_encode($data));
