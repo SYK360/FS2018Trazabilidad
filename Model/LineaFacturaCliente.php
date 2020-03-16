@@ -3,7 +3,7 @@
 use FacturaScripts\Dinamic\Model\Stock;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 
-class LineaFacturaProveedor extends \FacturaScripts\Core\Model\LineaFacturaProveedor
+class LineaFacturaCliente extends \FacturaScripts\Core\Model\LineaFacturaCliente
 {
     protected function updateStock()
     {
