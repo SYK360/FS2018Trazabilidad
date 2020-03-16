@@ -19,6 +19,7 @@ class TrazabilidadStock extends Stock
     {
         if (\FacturaScripts\Core\Model\Base\ModelClass::save())
         {
+            parent::updateProductStock();
             return true;
         }
         return false;

@@ -24,7 +24,7 @@ class LineaFacturaProveedor
                         $stock->referencia = $this->referencia;
                         $stock->disponible = 1;
                         $stock->cantidad = 1;
-                        $stock->codalmacen = $_POST['codalmacen'];
+                        $stock->codalmacen = $this->getDocument()->codalmacen;
                         $stock->numserie = $this->numserie;
                         $stock->save();
 
