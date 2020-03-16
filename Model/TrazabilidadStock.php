@@ -9,6 +9,7 @@ class TrazabilidadStock extends Stock
     {
         if (\FacturaScripts\Core\Model\Base\ModelClass::delete())
         {
+            parent::updateProductStock();
             return true;
         }
 
