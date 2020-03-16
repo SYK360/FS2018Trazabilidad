@@ -64,10 +64,7 @@ async function productHasTraceability(row){
     if (data_row[1] !== null){
         let data = {};
         data.action = 'get-trazabilidad';
-        data.product = {
-            referencia: data_row[0],
-            descripcion: data_row[1]
-        };
+        data.product = { referencia: data_row[0] };
         const response = await $.ajax({
             type: "POST",
             url: businessDocViewUrl,
@@ -93,27 +90,22 @@ async function businessDocViewRecalculate(change = null, source = null) {
     data.lines = getGridData();
     console.log("data", data);
     if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad') {
-        let hasTrazabilidad = await productHasTraceability(change[0][0]);
-        if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
-        {
-            var newLines = [], k = 0, changed = false;
-            for(let i = 0; i < data.lines.length; i++, k++) {
-                if (i < change[0][0]) {
-                    newLines[k] = data.lines[i];
-                } else {
-                    let num_rows = data.lines[i].cantidad;
-                    for(let j = 0; j < num_rows; j++, k++) {
-                        newLines[k] = data.lines[i];
-                        newLines[k].cantidad = 1;
-                    }
-                }
-            }
-            data.lines = newLines;
-            if(change[0][3] != 1){
+        var newLines = [], changed = false;
+        for (let i = 0; i < data.lines.length; i++){
+            let hasTrazabilidad = await productHasTraceability(i);
+            if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
+            {
                 changed = hasTrazabilidad.autosave;
+                let rows = data.lines[i].cantidad;
+                for(let j = 0; j < rows; j++) {
+                    data.lines[i].cantidad = 1;
+                    newLines.push(data.lines[i]);
+                }
+            } else {
+                newLines.push(data.lines[i]);
             }
         }
-
+        data.lines = newLines;
     }
     $.ajax({
         type: "POST",
