@@ -212,8 +212,8 @@ function businessDocViewSetAutocompletes(columns) {
                             if (!data.includes(element.key))
                                 values.push(element.key + " | " + element.value);
                         });
-                        debugger
-                        if(position[1] == data.length)
+                        let selected = hsTable.countVisibleCols() - 1;
+                        if(position[0][1] == selected)
                             values = values.filter(el => {
                                 return el.includes(ref)
                             });
