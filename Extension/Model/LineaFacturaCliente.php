@@ -39,7 +39,7 @@ class LineaFacturaCliente
                             $this->toolbox()->log()->error("El producto con serie $stock->numserie tiene conflictos, no tiene stock o esta registrado en otra factura.");
                         }
                     } else {
-                        $this->toolbox()->log()->warning("El producto tiene trazabilidad, seleccione la serie.");
+                        $this->toolbox()->log()->warning("El producto tiene trazabilidad, seleccione una serie perteneciente a $this->referencia");
                     }
                     return false;
                 }

@@ -27,7 +27,10 @@ class LineaFacturaProveedor
                         $stock->codalmacen = $this->getDocument()->codalmacen;
                         $stock->numserie = $this->numserie;
                         $stock->save();
-
+                        return true;
+                    }else{
+                        $this->toolbox()->log()->error("El stock con serie $this->numserie ya esta regisrado.");
+                        return false;
                     }
                 }
             }
