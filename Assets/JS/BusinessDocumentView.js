@@ -206,10 +206,17 @@ function businessDocViewSetAutocompletes(columns) {
                     success: function (response) {
                         var values = [];
                         let data = hsTable.getDataAtCol(hsTable.countVisibleCols() - 1);
+                        let position = hsTable.getSelected();
+                        let ref = hsTable.getData(position[0], position[1]).shift().shift();
                         response.forEach(function (element) {
                             if (!data.includes(element.key))
                                 values.push(element.key + " | " + element.value);
                         });
+                        debugger
+                        if(position[1] == data.length)
+                            values = values.filter(el => {
+                                return el.includes(ref)
+                            });
                         process(values);
                     },
                     error: function (msg) {
