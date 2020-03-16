@@ -206,14 +206,14 @@ function businessDocViewSetAutocompletes(columns) {
                     success: function (response) {
                         var values = [];
                         let data = hsTable.getDataAtCol(hsTable.countVisibleCols() - 1);
-                        let position = hsTable.getSelected();
-                        let ref = hsTable.getData(position[0], position[1]).shift().shift();
+                        let position = hsTable.getSelected().shift();
+                        let ref = hsTable.getDataAtCell(position[0], 0);
                         response.forEach(function (element) {
                             if (!data.includes(element.key))
                                 values.push(element.key + " | " + element.value);
                         });
                         let selected = hsTable.countVisibleCols() - 1;
-                        if(position[0][1] == selected)
+                        if(position[1] == selected)
                             values = values.filter(el => {
                                 return el.includes(ref)
                             });
