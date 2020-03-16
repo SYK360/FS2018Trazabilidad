@@ -31,7 +31,6 @@ class TrazabilidadStock extends Stock
 
     public function getStock(array $where)
     {
-//        $where[] = new DataBaseWhere('codalmacen', $_POST['codalmacen']);
         if($this->loadFromCode('', $where))
         {   $stock = $this->all($where)[0];
             if(!empty($stock->numserie)){
