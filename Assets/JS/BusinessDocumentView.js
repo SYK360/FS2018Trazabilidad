@@ -91,18 +91,28 @@ async function businessDocViewRecalculate(change = null, source = null) {
     console.log("data", data);
     if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad') {
         var newLines = [], changed = false;
-        for (let i = 0; i < data.lines.length; i++){
-            let hasTrazabilidad = await productHasTraceability(i);
-            if (hasTrazabilidad !== null && hasTrazabilidad.trazabilidad == 'series')
+        for (let i = 0; i < data.lines.length; i++)
+        {
+            var linea = data.lines[i];
+            if(typeof linea.trazabilidad == 'undefined')
             {
-                changed = hasTrazabilidad.autosave;
-                let rows = data.lines[i].cantidad;
-                for(let j = 0; j < rows; j++) {
-                    data.lines[i].cantidad = 1;
-                    newLines.push(data.lines[i]);
+                let hasTrazabilidad = await productHasTraceability(i);
+                linea.trazabilidad = 'none';
+                if(hasTrazabilidad != null && hasTrazabilidad.trazabilidad == 'series'){
+                    changed = hasTrazabilidad.autosave;
+                    linea.trazabilidad = hasTrazabilidad.trazabilidad;
+                }
+            }
+            if (linea.trazabilidad == 'series')
+            {
+                let rows = linea.cantidad;
+                for(let j = 0; j < rows; j++)
+                {
+                    linea.cantidad = 1;
+                    newLines.push(linea);
                 }
             } else {
-                newLines.push(data.lines[i]);
+                newLines.push(linea);
             }
         }
         data.lines = newLines;
