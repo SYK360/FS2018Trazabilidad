@@ -21,7 +21,7 @@ class LineaFacturaProveedor
                     {
                         $stock = new TrazabilidadStock();
                         $stock->idproducto = $product->idproducto;
-                        $stock->referencia = $product->referencia;
+                        $stock->referencia = $this->referencia;
                         $stock->disponible = 1;
                         $stock->cantidad = 1;
                         $stock->codalmacen = $_POST['codalmacen'];
