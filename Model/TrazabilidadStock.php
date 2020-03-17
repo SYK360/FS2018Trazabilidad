@@ -1,5 +1,4 @@
-<?php
-namespace FacturaScripts\Plugins\Trazabilidad\Model;
+<?php namespace FacturaScripts\Plugins\Trazabilidad\Model;
 
 use FacturaScripts\Core\Model\Stock;
 
@@ -34,7 +33,8 @@ class TrazabilidadStock extends Stock
     public function getStock(array $where)
     {
         if($this->loadFromCode('', $where))
-        {   $stock = $this->all($where)[0];
+        {
+            $stock = $this->all($where)[0];
             if(!empty($stock->numserie)){
                 return $stock;
             }

@@ -1,5 +1,6 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Model;
 
+use FacturaScripts\Core\Model\LineaFacturaProveedor as LineaFP;
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadStock;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadProducto;
@@ -17,6 +18,7 @@ class LineaFacturaProveedor
                         new DataBaseWhere('referencia', $this->referencia),
                         new DataBaseWhere('numserie', $this->numserie)
                     ];
+
                     if(!(new TrazabilidadStock())->getStock($where) && !empty($this->numserie))
                     {
                         $stock = new TrazabilidadStock();
@@ -28,7 +30,11 @@ class LineaFacturaProveedor
                         $stock->numserie = $this->numserie;
                         $stock->save();
                         return true;
-                    }else{
+                    } else {
+                        $linea = (new LineaFP())->all($where);
+                        if(count($linea) == 1 && $this->idfactura && $this->idfactura == $linea[0]->idfactura && $linea[0]->idlinea == $this->idlinea)
+                            return  true;
+
                         $this->toolbox()->log()->error("El stock con serie $this->numserie ya esta regisrado.");
                         return false;
                     }
@@ -41,8 +47,7 @@ class LineaFacturaProveedor
     {
         return function ()
         {
-            $where = [
-                new DataBaseWhere('referencia', $this->referencia),
+            $where = [                new DataBaseWhere('referencia', $this->referencia),
                 new DataBaseWhere('numserie', $this->numserie)
             ];
             $stock = (new TrazabilidadStock())->getStock($where);
