@@ -90,7 +90,7 @@ async function businessDocViewRecalculate(change = null, source = null) {
     data.lines = getGridData();
     console.log("data", data);
     if (change !== null && change[0][2] !== change[0][3] && change[0][1] == 'cantidad') {
-        var newLines = [], changed = false;
+        var newLines = [];
         for (let i = 0; i < data.lines.length; i++)
         {
             var linea = data.lines[i];
@@ -99,7 +99,6 @@ async function businessDocViewRecalculate(change = null, source = null) {
                 let hasTrazabilidad = await productHasTraceability(i);
                 linea.trazabilidad = 'none';
                 if(hasTrazabilidad != null && hasTrazabilidad.trazabilidad == 'series'){
-                    changed = hasTrazabilidad.autosave;
                     linea.trazabilidad = hasTrazabilidad.trazabilidad;
                 }
             }
@@ -138,9 +137,6 @@ async function businessDocViewRecalculate(change = null, source = null) {
                 rowPos++;
             });
             hsTable.render();
-            if(changed){
-                businessDocViewSave()
-            }
             console.log("results", results);
         },
         error: function (xhr, status, error) {

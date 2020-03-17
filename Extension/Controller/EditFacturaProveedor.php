@@ -16,7 +16,6 @@ class EditFacturaProveedor
               {
                   $data = [];
                   if ($product->trazabilidadseries){
-                      $data['autosave'] = false;
                       $data['trazabilidad'] = 'series';
                   }
                   $this->response->setContent(json_encode($data));
