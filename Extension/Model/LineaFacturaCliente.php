@@ -1,7 +1,6 @@
 <?php namespace FacturaScripts\Plugins\Trazabilidad\Extension\Model;
 
 use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
-use FacturaScripts\Core\Model\LineaFacturaCliente as LineaFC;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadStock;
 use FacturaScripts\Plugins\Trazabilidad\Model\TrazabilidadProducto;
 
@@ -22,7 +21,7 @@ class LineaFacturaCliente
                     $stock = (new TrazabilidadStock())->getStock($where);
                     if ($stock && !empty($this->numserie))
                     {
-                        $linea =  new LineaFC();
+                        $linea =  new self();
                         if ($this->cantidad != 1)
                         {
                             $this->toolbox()->log()->error("Solo posee un producto con la serie $this->numserie, cambie la cantidad.");
